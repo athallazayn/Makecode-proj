@@ -1,0 +1,60 @@
+input.buttonA.onEvent(ButtonEvent.LongClick, function () {
+    light.setAll(0xff0000)
+    network.infraredSendNumber(RGBred)
+})
+input.buttonB.onEvent(ButtonEvent.LongClick, function () {
+    light.setAll(0xffffff)
+    RGBred = light.rgb(255, 0, 0)
+    RGByellow = light.rgb(255, 255, 0)
+})
+input.touchA1.onEvent(ButtonEvent.Click, function () {
+    music.siren.play()
+    for (let i = 0; i < 4; i++) {
+        light.showRing(
+            `blue blue blue blue blue blue blue blue blue blue`
+        )
+        light.showRing(
+            "red red red red red red red red red red"
+        )
+    }
+})
+input.buttonB.onEvent(ButtonEvent.Click, function () {
+    light.setAll(0x7f00ff)
+    network.infraredSendNumber(RGByellow)
+})
+input.onGesture(Gesture.Shake, function () {
+    light.setAll(0xff0000)
+})
+input.buttonsAB.onEvent(ButtonEvent.Click, function () {
+    light.setAll(0xffffff)
+    network.infraredSendNumber(0)
+})
+input.buttonA.onEvent(ButtonEvent.Click, function () {
+    if (time < 10) {
+        light.photonForward(1)
+        time += 1
+    }
+})
+network.onInfraredReceivedNumber(function (num) {
+    light.setAll(num)
+})
+input.onLoudSound(function () {
+    light.photonFlip()
+    light.setPhotonMode(PhotonMode.Eraser)
+    for (let i = 0; i < time; i++) {
+        music.playTone(262, 300)
+        pause(700)
+        light.photonForward(1)
+    }
+    for (let i = 0; i < 3; i++) {
+        music.playTone(523, 100)
+        pause(100)
+        music.playTone(523, 100)
+        light.showAnimation(light.sparkleAnimation, 500)
+    }
+})
+let RGByellow = 0
+let RGBred = 0
+let time = 0
+time = 1
+light.photonForward(0)
