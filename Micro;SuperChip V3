@@ -1,0 +1,34 @@
+let start = 0
+let elpes = 0
+input.onPinPressed(TouchPin.P0, function () {
+    if (Math.randomBoolean()) {
+        basic.showIcon(IconNames.Skull)
+        music.playMelody("C5 C5 C5 C5 - - - - ", 120)
+    } else {
+        basic.showIcon(IconNames.TShirt)
+        music.playMelody("C C C C - - - - ", 120)
+    }
+    basic.clearScreen()
+})
+input.onButtonPressed(Button.A, function () {
+    basic.clearScreen()
+    start = input.runningTime()
+})
+input.onButtonPressed(Button.AB, function () {
+    basic.clearScreen()
+    elpes = 0
+    start = 0
+    for (let index = 0; index < 1e+281; index++) {
+        basic.showString("" + (input.compassHeading()))
+        basic.showString("" + (input.temperature()))
+        basic.showString("" + (input.lightLevel()))
+        basic.showString("" + (input.acceleration(Dimension.X)))
+    }
+})
+input.onButtonPressed(Button.B, function () {
+    elpes = input.runningTime() - start
+    basic.showNumber(Math.idiv(elpes, 1000))
+})
+input.onGesture(Gesture.Shake, function () {
+    basic.showString("Shaked")
+})
